@@ -1,10 +1,10 @@
-package com.chasemccoy.Appointments;
+package com.chasemccoy.appointmentservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AppointmentsApplicationTests {
+class AppointmentServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
