@@ -1,6 +1,7 @@
 # SpringGroupProject
 Spring microservices group
 Developer Project for Bootcamp 
+Ojas Gupta and Chase McCoy
 
  
 
