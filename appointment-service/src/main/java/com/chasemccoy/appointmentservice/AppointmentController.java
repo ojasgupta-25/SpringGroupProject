@@ -3,6 +3,8 @@ package com.chasemccoy.appointmentservice;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,40 +28,41 @@ public class AppointmentController {
 	private AppointmentRepository repository;
 
 	@GetMapping("/list")
-	public List<Appointment> listAppts() {
-		return repository.findAll();
+	public ResponseEntity<List<Appointment>> listAppts() {
+		return ResponseEntity.ok(repository.findAll());
 	}
 	
 	@PostMapping("/create")
-	public void createAppt(@RequestBody Appointment appointment) {
-		repository.save(appointment);
+	public ResponseEntity<Appointment> createAppt(@RequestBody Appointment appointment) {
+		return ResponseEntity.ok(repository.save(appointment));
 	}
 	
 	@PutMapping("/update")
-	public void updateAppt(@RequestBody Appointment appointment) {
-		repository.save(appointment);
+	public ResponseEntity<Appointment> updateAppt(@RequestBody Appointment appointment) {
+		return ResponseEntity.ok(repository.save(appointment));
 	}
 	
 	@GetMapping("/getByName/{name}")
-	public Appointment getAppt(@PathVariable String name) {
+	public ResponseEntity<Appointment> getAppt(@PathVariable String name) {
 		List<Appointment> appointments = repository.findAll();
 		for (Appointment appointment : appointments) {
 			if (appointment.getApptName().equals(name)) {
-				return appointment;
+				return ResponseEntity.ok(appointment);
 			}
 		}
-		throw new RuntimeException();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
 	@DeleteMapping("/deleteByName/{name}")
-	public void deleteAppt(@PathVariable String name) {
+	public ResponseEntity<Appointment> deleteAppt(@PathVariable String name) {
 		List<Appointment> appointments = repository.findAll();
 		for (Appointment appointment : appointments) {
 			if (appointment.getApptName().equals(name)) {
 				repository.delete(appointment);
+				return ResponseEntity.ok(appointment);
 			}
 		}
-		throw new RuntimeException();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
 }
