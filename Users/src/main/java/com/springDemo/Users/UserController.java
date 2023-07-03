@@ -32,7 +32,7 @@ public class UserController {
             user.setLastName(updatedUser.getLastName());
             user.setGender(updatedUser.getGender());
             user.setAge(updatedUser.getAge());
-            user.setEmailAddresses(updatedUser.getEmailAddresses());
+            user.setEmailAddress(updatedUser.getEmailAddress());
             user.setPhoneNumbers(updatedUser.getPhoneNumbers());
             return userDAO.save(user);
         }

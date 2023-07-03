@@ -22,7 +22,7 @@ public class User {
     private int age;
 
     @Column(name = "email_address")
-    private String emailAddresses;
+    private String emailAddress;
 
     @Column(name = "phone_numbers")
     private String phoneNumbers;
@@ -33,7 +33,7 @@ public class User {
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.emailAddresses = emailAddresses;
+        this.emailAddress = emailAddresses;
         this.phoneNumbers = phoneNumbers;
     }
 
@@ -80,12 +80,12 @@ public class User {
         this.age = age;
     }
 
-    public String getEmailAddresses() {
-        return emailAddresses;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmailAddresses(String emailAddresses) {
-        this.emailAddresses = emailAddresses;
+    public void setEmailAddress(String emailAddresses) {
+        this.emailAddress = emailAddresses;
     }
 
     public String getPhoneNumbers() {
