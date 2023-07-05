@@ -1,5 +1,6 @@
 package com.chasemccoy.appointmentservice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AppointmentController {
-
-	/*
-	ListAppts
-	CreateAppt
-	UpdateAppt
-	GetAppt
-	DeleteAppt
-	 */
 	
 	@Autowired
 	private AppointmentRepository repository;
@@ -30,6 +23,18 @@ public class AppointmentController {
 	@GetMapping("/list")
 	public ResponseEntity<List<Appointment>> listAppts() {
 		return ResponseEntity.ok(repository.findAll());
+	}
+	
+	@GetMapping("/list/fromUser/{id}")
+	public ResponseEntity<List<Appointment>> listApptsByUser(@PathVariable Long id) {
+		
+		List<Appointment> userAppts = new ArrayList<Appointment>();
+		for (Appointment appointment : repository.findAll()) {
+			if (appointment.getUserId() == id) {
+				userAppts.add(appointment);
+			}
+		}
+		return ResponseEntity.ok(userAppts);
 	}
 	
 	@PostMapping("/create")

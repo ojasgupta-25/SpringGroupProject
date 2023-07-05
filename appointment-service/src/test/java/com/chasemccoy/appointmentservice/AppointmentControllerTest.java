@@ -32,8 +32,8 @@ class AppointmentControllerTest {
 	@Test
 	void testListAppts() {
 		
-		Appointment a1 = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata");
-		Appointment a2 = new Appointment("name2", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata");
+		Appointment a1 = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
+		Appointment a2 = new Appointment("name2", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		appointmentRepository.save(a1);
 		appointmentRepository.save(a2);
 		List<Appointment> appointments = appointmentController.listAppts().getBody();
@@ -42,8 +42,19 @@ class AppointmentControllerTest {
 	}
 	
 	@Test
+	void testListApptsByUser() {
+		
+		Appointment a1 = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
+		Appointment a2 = new Appointment("name2", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 1L);
+		appointmentRepository.save(a1);
+		appointmentRepository.save(a2);
+		List<Appointment> appointments = appointmentController.listApptsByUser(1L).getBody();
+		assertEquals(1, appointments.size());
+	}
+	
+	@Test
 	void testCreateAppt() {
-		Appointment a_put = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata");
+		Appointment a_put = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		appointmentController.createAppt(a_put);
 		
 		assertEquals(1, appointmentRepository.count());
@@ -52,8 +63,8 @@ class AppointmentControllerTest {
 	
 	@Test
 	void testUpdateAppt() {
-		Appointment a_original = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata");
-		Appointment a_updated = new Appointment("name", "updated_type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata");
+		Appointment a_original = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
+		Appointment a_updated = new Appointment("name", "updated_type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		appointmentRepository.save(a_original);
 		appointmentController.updateAppt(a_updated);
 		
@@ -63,7 +74,7 @@ class AppointmentControllerTest {
 	
 	@Test
 	void testGetApptByName() {
-		Appointment a_put = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata");
+		Appointment a_put = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		appointmentRepository.save(a_put);
 		Appointment a_get = appointmentController.getAppt("name").getBody();
 		HttpStatusCode status = appointmentController.getAppt("not_found").getStatusCode();
@@ -74,7 +85,7 @@ class AppointmentControllerTest {
 	
 	@Test
 	void testDeleteApptByName() {
-		Appointment a_put = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata");
+		Appointment a_put = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		appointmentRepository.save(a_put);
 		Appointment a_delete = appointmentController.deleteAppt("name").getBody();
 		HttpStatusCode status = appointmentController.getAppt("not_found").getStatusCode();
