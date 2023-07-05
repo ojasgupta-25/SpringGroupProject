@@ -27,8 +27,7 @@ public class User {
     @Column(name = "phone_numbers")
     private String phoneNumbers;
 
-    public User(Long id, String firstName, String lastName, String gender, int age, String emailAddresses, String phoneNumbers) {
-        this.id = id;
+    public User(String firstName, String lastName, String gender, int age, String emailAddresses, String phoneNumbers) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;

@@ -2,13 +2,68 @@ package com.springDemo.Users;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
 class UsersApplicationTests {
 
+	@Test
+	void testCreateUser() {
+		User user = new User("John", "Doe", "Male", 30, "johndoe@example.com", "123-456-7890");
+		assertEquals("John", user.getFirstName());
+		assertEquals("Doe", user.getLastName());
+		assertEquals("Male", user.getGender());
+		assertEquals(30, user.getAge());
+		assertEquals("johndoe@example.com", user.getEmailAddress());
+		assertEquals("123-456-7890", user.getPhoneNumbers());
+	}
+
+	@Test
+	void testSetFirstName() {
+		User user = new User();
+		user.setFirstName("Jane");
+		assertEquals("Jane", user.getFirstName());
+	}
+
+	@Test
+	void testSetLastName() {
+		User user = new User();
+		user.setLastName("Doe");
+		assertEquals("Doe", user.getLastName());
+	}
+
+	@Test
+	void testSetGender() {
+		User user = new User();
+		user.setGender("Female");
+		assertEquals("Female", user.getGender());
+	}
+
+	@Test
+	void testSetAge() {
+		User user = new User();
+		user.setAge(20);
+		assertEquals(20, user.getAge());
+	}
+
+	@Test
+	void testSetEmailAddress() {
+		User user = new User();
+		user.setEmailAddress("janedoe@example.com");
+		assertEquals("janedoe@example.com", user.getEmailAddress());
+	}
+
+	@Test
+	void testSetPhoneNumbers() {
+		User user = new User();
+		user.setPhoneNumbers("123-456-7890");
+		assertEquals("123-456-7890", user.getPhoneNumbers());
+	}
+
+	// controller tests
 	@Autowired
 	private UserController userController;
 
@@ -33,7 +88,7 @@ class UsersApplicationTests {
 	}
 
 	@Test
-	public void testCreateUser() {
+	public void testCreateUserClass() {
 		User user = new User();
 		user.setFirstName("John");
 		user.setLastName("Doe");
