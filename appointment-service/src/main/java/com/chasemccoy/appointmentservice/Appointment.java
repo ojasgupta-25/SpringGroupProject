@@ -21,12 +21,13 @@ public class Appointment {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime endTime;
 	private String metadata;
+	private Long userId;
 	
 	public Appointment() {
 		super();
 	}
 	
-	public Appointment(String apptName, String apptType, String description, LocalDateTime startTime, LocalDateTime endTime, String metadata) {
+	public Appointment(String apptName, String apptType, String description, LocalDateTime startTime, LocalDateTime endTime, String metadata, Long userId) {
 		super();
 		this.apptName = apptName;
 		this.apptType = apptType;
@@ -34,6 +35,7 @@ public class Appointment {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.metadata = metadata;
+		this.userId = userId;
 	}
 	
 	public String getApptName() {
@@ -71,6 +73,14 @@ public class Appointment {
 	}
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }
