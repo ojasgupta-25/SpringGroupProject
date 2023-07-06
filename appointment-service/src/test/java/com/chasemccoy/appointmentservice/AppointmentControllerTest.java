@@ -1,7 +1,5 @@
 package com.chasemccoy.appointmentservice;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,6 +13,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import jakarta.transaction.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -93,5 +93,80 @@ class AppointmentControllerTest {
 		assertEquals(a_put.getApptName(), a_delete.getApptName());	
 		assertEquals(status, HttpStatus.NOT_FOUND);
 	}
+
+	@Test
+	public void testAppointment() {
+		Appointment appointment = new Appointment();
+		assertNotNull(appointment);
+		assertEquals("", appointment.getApptName());
+		assertEquals("", appointment.getApptType());
+		assertEquals("", appointment.getDescription());
+		assertEquals(null, appointment.getStartTime());
+		assertEquals(null, appointment.getEndTime());
+		assertEquals("", appointment.getMetadata());
+		assertEquals(null, appointment.getUserId());
+	}
+
+	@Test
+	public void testSetApptName() {
+		Appointment appointment = new Appointment();
+		appointment.setApptName("My Appointment");
+		assertEquals("My Appointment", appointment.getApptName());
+	}
+
+	@Test
+	public void testSetApptType() {
+		Appointment appointment = new Appointment();
+		appointment.setApptType("Meeting");
+		assertEquals("Meeting", appointment.getApptType());
+	}
+
+	@Test
+	public void testSetDescription() {
+		Appointment appointment = new Appointment();
+		appointment.setDescription("This is a meeting.");
+		assertEquals("This is a meeting.", appointment.getDescription());
+	}
+
+	@Test
+	public void testSetStartTime() {
+		Appointment appointment = new Appointment();
+		appointment.setStartTime(LocalDateTime.now());
+		assertEquals(LocalDateTime.now(), appointment.getStartTime());
+	}
+
+	@Test
+	public void testSetEndTime() {
+		Appointment appointment = new Appointment();
+		appointment.setEndTime(LocalDateTime.now().plusHours(1));
+		assertEquals(LocalDateTime.now().plusHours(1), appointment.getEndTime());
+	}
+
+	@Test
+	public void testSetMetadata() {
+		Appointment appointment = new Appointment();
+		appointment.setMetadata("Some metadata");
+		assertEquals("Some metadata", appointment.getMetadata());
+	}
+
+	@Test
+	public void testSetUserId() {
+		Appointment appointment = new Appointment();
+		appointment.setUserId(1L);
+		assertEquals(1L, appointment.getUserId());
+	}
+
+	@Test
+	public void testSetStartTimeWithNull() {
+		Appointment appointment = new Appointment();
+		assertThrows(NullPointerException.class, () -> appointment.setStartTime(null));
+	}
+
+	@Test
+	public void testSetEndTimeWithNull() {
+		Appointment appointment = new Appointment();
+		assertThrows(NullPointerException.class, () -> appointment.setEndTime(null));
+	}
+
 
 }
