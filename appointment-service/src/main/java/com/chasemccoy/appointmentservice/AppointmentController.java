@@ -20,49 +20,50 @@ public class AppointmentController {
 	@Autowired
 	private AppointmentRepository repository;
 
-	@GetMapping("/list")
+	@GetMapping("/appointments")
 	public ResponseEntity<List<Appointment>> listAppts() {
 		return ResponseEntity.ok(repository.findAll());
 	}
 	
-	@GetMapping("/list/fromUser/{id}")
-	public ResponseEntity<List<Appointment>> listApptsByUser(@PathVariable Long id) {
+	@GetMapping("/appointments/user/{userid}")
+	public ResponseEntity<List<Appointment>> listApptsByUser(@PathVariable Long userid) {
 		
 		List<Appointment> userAppts = new ArrayList<Appointment>();
 		for (Appointment appointment : repository.findAll()) {
-			if (appointment.getUserId() == id) {
+			if (appointment.getUserId() == userid) {
 				userAppts.add(appointment);
 			}
 		}
 		return ResponseEntity.ok(userAppts);
 	}
 	
-	@PostMapping("/create")
+	@PostMapping("/appointments")
 	public ResponseEntity<Appointment> createAppt(@RequestBody Appointment appointment) {
 		return ResponseEntity.ok(repository.save(appointment));
 	}
 	
-	@PutMapping("/update")
-	public ResponseEntity<Appointment> updateAppt(@RequestBody Appointment appointment) {
+	@PutMapping("/appointments/{id}")
+	public ResponseEntity<Appointment> updateAppt(@PathVariable Long id, @RequestBody Appointment appointment) {
+		appointment.setId(id);
 		return ResponseEntity.ok(repository.save(appointment));
 	}
 	
-	@GetMapping("/getByName/{name}")
-	public ResponseEntity<Appointment> getAppt(@PathVariable String name) {
+	@GetMapping("/appointments/{id}")
+	public ResponseEntity<Appointment> getAppt(@PathVariable Long id) {
 		List<Appointment> appointments = repository.findAll();
 		for (Appointment appointment : appointments) {
-			if (appointment.getApptName().equals(name)) {
+			if (appointment.getId().equals(id)) {
 				return ResponseEntity.ok(appointment);
 			}
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
-	@DeleteMapping("/deleteByName/{name}")
-	public ResponseEntity<Appointment> deleteAppt(@PathVariable String name) {
+	@DeleteMapping("/appointments/{id}")
+	public ResponseEntity<Appointment> deleteAppt(@PathVariable Long id) {
 		List<Appointment> appointments = repository.findAll();
 		for (Appointment appointment : appointments) {
-			if (appointment.getApptName().equals(name)) {
+			if (appointment.getId().equals(id)) {
 				repository.delete(appointment);
 				return ResponseEntity.ok(appointment);
 			}

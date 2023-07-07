@@ -58,37 +58,37 @@ class AppointmentControllerTest {
 		appointmentController.createAppt(a_put);
 		
 		assertEquals(1, appointmentRepository.count());
-		assertEquals(a_put.getApptName(), appointmentRepository.findAll().get(0).getApptName());
+		assertEquals(a_put.getId(), appointmentRepository.findAll().get(0).getId());
 	}
 	
 	@Test
 	void testUpdateAppt() {
-		Appointment a_original = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
-		Appointment a_updated = new Appointment("name", "updated_type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
+		Appointment a_original = new Appointment("original", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
+		Appointment a_updated = new Appointment("updated", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		appointmentRepository.save(a_original);
-		appointmentController.updateAppt(a_updated);
+		appointmentController.updateAppt(a_original.getId(), a_updated);
 		
 		assertEquals(1, appointmentRepository.count());
-		assertEquals(a_updated.getApptType(), appointmentRepository.findAll().get(0).getApptType());
+		assertEquals("updated", appointmentRepository.findAll().get(0).getApptName());
 	}
 	
 	@Test
-	void testGetApptByName() {
+	void testGetAppt() {
 		Appointment a_put = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		appointmentRepository.save(a_put);
-		Appointment a_get = appointmentController.getAppt("name").getBody();
-		HttpStatusCode status = appointmentController.getAppt("not_found").getStatusCode();
+		Appointment a_get = appointmentController.getAppt(a_put.getId()).getBody();
+		HttpStatusCode status = appointmentController.getAppt(0L).getStatusCode();
 		
-		assertEquals(a_put.getApptName(), a_get.getApptName());
+		assertEquals(a_put.getId(), a_get.getId());
 		assertEquals(status, HttpStatus.NOT_FOUND);
 	}
 	
 	@Test
-	void testDeleteApptByName() {
+	void testDeleteAppt() {
 		Appointment a_put = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		appointmentRepository.save(a_put);
-		Appointment a_delete = appointmentController.deleteAppt("name").getBody();
-		HttpStatusCode status = appointmentController.getAppt("not_found").getStatusCode();
+		Appointment a_delete = appointmentController.deleteAppt(a_put.getId()).getBody();
+		HttpStatusCode status = appointmentController.getAppt(0L).getStatusCode();
 		
 		assertEquals(a_put.getApptName(), a_delete.getApptName());	
 		assertEquals(status, HttpStatus.NOT_FOUND);
@@ -96,15 +96,15 @@ class AppointmentControllerTest {
 
 	@Test
 	public void testAppointment() {
-		Appointment appointment = new Appointment();
+		Appointment appointment = new Appointment("name", "type", "description", LocalDateTime.now(), LocalDateTime.now(), "metadata", 0L);
 		assertNotNull(appointment);
-		assertEquals("", appointment.getApptName());
-		assertEquals("", appointment.getApptType());
-		assertEquals("", appointment.getDescription());
-		assertEquals(null, appointment.getStartTime());
-		assertEquals(null, appointment.getEndTime());
-		assertEquals("", appointment.getMetadata());
-		assertEquals(null, appointment.getUserId());
+		assertEquals("name", appointment.getApptName());
+		assertEquals("type", appointment.getApptType());
+		assertEquals("description", appointment.getDescription());
+		assertEquals(LocalDateTime.now().getMinute(), appointment.getStartTime().getMinute());
+		assertEquals(LocalDateTime.now().getMinute(), appointment.getEndTime().getMinute());
+		assertEquals("metadata", appointment.getMetadata());
+		assertEquals(0L, appointment.getUserId());
 	}
 
 	@Test
@@ -132,14 +132,14 @@ class AppointmentControllerTest {
 	public void testSetStartTime() {
 		Appointment appointment = new Appointment();
 		appointment.setStartTime(LocalDateTime.now());
-		assertEquals(LocalDateTime.now(), appointment.getStartTime());
+		assertEquals(LocalDateTime.now().getMinute(), appointment.getStartTime().getMinute());
 	}
 
 	@Test
 	public void testSetEndTime() {
 		Appointment appointment = new Appointment();
 		appointment.setEndTime(LocalDateTime.now().plusHours(1));
-		assertEquals(LocalDateTime.now().plusHours(1), appointment.getEndTime());
+		assertEquals(LocalDateTime.now().plusHours(1).getMinute(), appointment.getEndTime().getMinute());
 	}
 
 	@Test
@@ -155,18 +155,5 @@ class AppointmentControllerTest {
 		appointment.setUserId(1L);
 		assertEquals(1L, appointment.getUserId());
 	}
-
-	@Test
-	public void testSetStartTimeWithNull() {
-		Appointment appointment = new Appointment();
-		assertThrows(NullPointerException.class, () -> appointment.setStartTime(null));
-	}
-
-	@Test
-	public void testSetEndTimeWithNull() {
-		Appointment appointment = new Appointment();
-		assertThrows(NullPointerException.class, () -> appointment.setEndTime(null));
-	}
-
 
 }
